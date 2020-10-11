@@ -380,7 +380,7 @@ def scrape(url):
                     setting = 'sit'
             elif counter < 22:
                 position = 'te'
-                if counter > 20:
+                if counter > 19:
                     setting = 'sit'
             else:
                 position = 'dst'

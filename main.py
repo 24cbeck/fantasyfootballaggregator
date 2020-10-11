@@ -17,7 +17,7 @@ list = [scraper.StartEm, scraper.SitEm, scraper.Enigma]
 
 @app.route('/')
 def main():
-    return render_template('index.html', list=list)
+    return render_template('index.html', list=list, week=scraper.getWeek())
 
 
 if __name__ == '__main__':

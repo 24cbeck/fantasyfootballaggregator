@@ -4,21 +4,29 @@
     <script type= "text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.0/brython.min.js"></script>
     <script type= "text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.0/brython_stdlib.min.js"></script>
     <style type="text/css">
+        body {
+        font-family: Helvetica, Tahoma, sans-serif;
+        width: 75%
+        margin: auto;
+        background-color: #c1dbe3;
+        }
+        p, ul {
+            margin: auto;
+            width: 80%;
+            padding: 25px;
+        }
         table, th, td {
         border: 1px solid black;
         }
         table{
         border-collapse: collapse;
-        margin-left: auto;
-        margin-right: auto;
-        width: 75%;
+        margin: auto;
+        width: 80%;
         }
         label {
-        font-family: helvetica;
         }
         th, td {
         padding: 5px;
-        font-family: helvetica;
         }
         th {
             text-align: left;
@@ -26,25 +34,42 @@
             color: white;
          }
         tr:nth-child(even) {background-color: #e0ded7;}
-        h3 {
-        font-family: helvetica;
+        h3, h1 {
         text-align: center;
+        padding: 25px;
         }
         div {
-        margin-left: auto;
-        margin-right: auto;
-        width: 20%
+        margin: auto;
+        width: 25%
 
         }
+        hr {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 25px
+        margin-bottom: 25px;
+        width: 80%;
 
-
+        height: 25px;
+        background-color: #03bafc;
+        }
     </style>
     <meta charset="UTF-8">
     <title>Fantasy Football Aggregator</title>
-
     <link rel="icon" href="favicon.png" type="image/png">
 </head>
 <body onload="brython()">
+    <h1>Fantasy Football Aggregator</h1>
+    <p>Welcome to the Fantasy Football Aggregator! This site looks at online start 'em, sit 'em columns from various
+        members of the fantasy football cognoscenti and aggregates all of their advice.
+        The rationale between the start, sit, and enigma lists is simple. If a player receives more good press
+    than bad press leading up to Sunday, then he goes on the start list. If he receives more bad press than good press
+    leading up to Sunday, then he goes on the sit list. If he receives roughly the same amount of good press and bad press,
+    then he is an enigmatic player who you should start at your own risk. Players who have higher mentions have been found
+    mentioned by experts more often across the web. That being said, players with low mentions will generally be sleepers,
+    and may still be available in your league, so don't just look at the top of the list. Click on each table heading to sort by that
+    category. That's all of the advice we have. Good luck and go win your league!</p>
+    <hr>
     <div id="checkboxes">
         <input type = "checkbox" id="QB" checked>
         <label for="QB">QB</label>
@@ -59,28 +84,25 @@
         <input type = "checkbox" id="D/ST" checked>
         <label for="D/ST">D/ST</label>
     </div>
-
-
-
     <h3>Start 'em</h3>
     <table id ="startem">
     <tr>
-        <th>
+        <th onclick="sortTable(0, 0)">
             Name:
         </th>
-        <th>
+        <th onclick="sortTable(1, 0)">
             Position:
         </th>
-        <th>
+        <th onclick="sortTable(2, 0)">
             Team:
         </th>
-        <th>
+        <th onclick="sortTable(3, 0)">
             Opponent:
         </th>
-        <th>
+        <th  onclick="sortTable(4, 0)">
             Positive Mentions:
         </th>
-        <th>
+        <th onclick="sortTable(5, 0)">
             Negative Mentions:
         </th>
 
@@ -99,24 +121,25 @@
     <h3>Sit 'em</h3>
     <table id ="sitem">
     <tr>
-        <th>
+         <th onclick="sortTable(0, 1)">
             Name:
         </th>
-        <th>
+        <th onclick="sortTable(1, 1)">
             Position:
         </th>
-        <th>
+        <th onclick="sortTable(2, 1)">
             Team:
         </th>
-        <th>
+        <th onclick="sortTable(3, 1)">
             Opponent:
         </th>
-        <th>
+        <th  onclick="sortTable(4, 1)">
             Positive Mentions:
         </th>
-        <th>
+        <th onclick="sortTable(5, 1)">
             Negative Mentions:
         </th>
+
 
     </tr>
     {% for player in list[1] %}
@@ -131,27 +154,26 @@
         {% endfor%}
     </table>
     <h3>Enigmas</h3>
-    <table id ="Enigmas">
+    <table id ="enigmas">
     <tr>
-        <th>
+         <th onclick="sortTable(0, 2)">
             Name:
         </th>
-        <th>
+        <th onclick="sortTable(1, 2)">
             Position:
         </th>
-        <th>
+        <th onclick="sortTable(2, 2)">
             Team:
         </th>
-        <th>
+        <th onclick="sortTable(3, 2)">
             Opponent:
         </th>
-        <th>
+        <th  onclick="sortTable(4, 2)">
             Positive Mentions:
         </th>
-        <th>
+        <th onclick="sortTable(5, 2)">
             Negative Mentions:
         </th>
-
     </tr>
     {% for player in list[2] %}
             <tr class="row">
@@ -164,6 +186,21 @@
             </tr>
         {% endfor%}
     </table>
+    <hr>
+    <ul>The Fantasy Football Aggregator was made possible thanks to the following columnists:
+    <li><a href="https://www.nbcsports.com/washington/football-team/start-em-sit-em-best-fantasy-football-plays-week-{{week}}" target="_blank">
+        Matt Weyrich
+    </a></li>
+    <li><a href="https://www.nfl.com/news/nfl-fantasy-football-start-em-sit-em-week-{{week}}" target="_blank">
+        Adam Rank
+    </a></li>
+    <li><a href="https://fantasydata.com/start-em-sit-em-week-{{week}}" target="_blank">
+        Jody Smith
+    </a></li>
+
+    </ul>
+
+
     <script type="text/python" id="script0">
         from browser import document, console
         def makeChanges(e):
@@ -241,6 +278,55 @@
                     if child.text == 'D/ST':
                         child.parent.style.display = "table-row"
         document['D/ST'].bind('click', makeChanges)
+    </script>
+    <script type="text/javascript">
+        function sortTable(m, n) {
+            var table = document.getElementById("startem");
+            if (n == 1) {
+            table = document.getElementById("sitem");
+            } else if(n == 2) {
+            table = document.getElementById("enigmas");
+            }
+            var direction, row, isSwitch, i, one, two, should;
+            count = 0;
+            direction = 0;
+            isSwitch = true;
+            while(isSwitch) {
+                isSwitch = false;
+                row = table.rows;
+                for (i=1; i < (row.length-1); i++) {
+                    should = false;
+                    one = row[i].getElementsByTagName("TD")[m];
+                    two = row[i+1].getElementsByTagName("TD")[m];
+                    if(direction == 0) {
+                        if(one.innerHTML > two.innerHTML) {
+                        should = true;
+                        break;
+                       }
+                    } else if(direction == 1){
+                        if(one.innerHTML < two.innerHTML) {
+                        should = true;
+                        break;
+                       }
+                       }
+                    }
+
+                if(should) {
+                row[i].parentNode.insertBefore(row[i+1], row[i]);
+                isSwitch = true;
+                count++;
+                } else {
+                if (count == 0 && direction == 0){
+                    direction = 1
+                    isSwitch = true;
+                }
+
+            }
+           }
+        }
+
+
+
     </script>
 </body>
 </html>
