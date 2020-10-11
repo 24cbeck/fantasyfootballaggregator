@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style type="text/css">
+        table, th, td {
+        border: 1px solid black;
+        }
+        table {
+        border-collapse: collapse;
+        margin-left: auto;
+        margin-right: auto;
+        width: 75%;
+        }
+        th, td {
+        padding: 5px;
+        font-family: helvetica;
+        }
+        th {
+            text-align: left;
+            background-color: #03bafc;
+            color: white;
+         }
+         tr:nth-child(even) {background-color: #e0ded7;}
+        h3 {
+        font-family: helvetica;
+        text-align: center;
+        }
+
+
+
+
+    </style>
+    <meta charset="UTF-8">
+    <title>Fantasy Football Aggregator</title>
+
+</head>
+<body>
+    <h3>Start 'Em</h3>
+    <table id ="startem">
+    <tr>
+        <th>
+            Name:
+        </th>
+        <th>
+            Position:
+        </th>
+        <th>
+            Team:
+        </th>
+        <th>
+            Opponent:
+        </th>
+        <th>
+            Positive Mentions:
+        </th>
+        <th>
+            Negative Mentions:
+        </th>
+
+    </tr>
+    {% for player in list[0] %}
+            <tr>
+            <td>{{player.name}}</td>
+            <td>{{player.position.upper()}}</td>
+            <td>{{player.team}}</td>
+            <td>{{player.opponent}}</td>
+            <td>{{player.positivementions}}</td>
+            <td>{{player.negativementions}}</td>
+            </tr>
+        {% endfor%}
+    </table>
+    <h3>Sit 'Em</h3>
+    <table id ="sitem">
+    <tr>
+        <th>
+            Name:
+        </th>
+        <th>
+            Position:
+        </th>
+        <th>
+            Team:
+        </th>
+        <th>
+            Opponent:
+        </th>
+        <th>
+            Positive Mentions:
+        </th>
+        <th>
+            Negative Mentions:
+        </th>
+
+    </tr>
+    {% for player in list[1] %}
+            <tr>
+            <td>{{player.name}}</td>
+            <td>{{player.position.upper()}}</td>
+            <td>{{player.team}}</td>
+            <td>{{player.opponent}}</td>
+            <td>{{player.positivementions}}</td>
+            <td>{{player.negativementions}}</td>
+            </tr>
+        {% endfor%}
+    </table>
+    <h3>Enigmas</h3>
+    <table id ="Enigmas">
+    <tr>
+        <th>
+            Name:
+        </th>
+        <th>
+            Position:
+        </th>
+        <th>
+            Team:
+        </th>
+        <th>
+            Opponent:
+        </th>
+        <th>
+            Positive Mentions:
+        </th>
+        <th>
+            Negative Mentions:
+        </th>
+
+    </tr>
+    {% for player in list[2] %}
+            <tr>
+            <td>{{player.name}}</td>
+            <td>{{player.position.upper()}}</td>
+            <td>{{player.team}}</td>
+            <td>{{player.opponent}}</td>
+            <td>{{player.positivementions}}</td>
+            <td>{{player.negativementions}}</td>
+            </tr>
+        {% endfor%}
+    </table>
+</body>
+</html>
