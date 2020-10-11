@@ -64,7 +64,39 @@ teamnames = {
     'Pittsburgh': 'PIT',
     'Cleveland': 'CLE',
     'Baltimore': 'BAL',
-    'Cincinnati': 'CIN'
+    'Cincinnati': 'CIN',
+    'Chargers': 'Los Angeles Chargers',
+    'Broncos': 'Denver Broncos',
+    'Raiders': 'Las Vegas Raiders',
+    'Chiefs': 'Kansas City Chiefs',
+    'Rams': 'Los Angeles Rams',
+    'Seahawks': 'Seattle Seahawks',
+    '49ers': 'San Francisco 49ers',
+    'Cardinals': 'Arizona Cardinals',
+    'Texans': 'Houston Texans',
+    'Colts': 'Indianapolis Colts',
+    'Jaguars': 'Jacksonville Jaguars',
+    'Titans': 'Tennessee Titans',
+    'Panthers': 'Carolina Panthers',
+    'Saints': 'New Orleans Saints',
+    'Falcons': 'Atlanta Falcons',
+    'Buccaneers': 'Tampa Bay Buccaneers',
+    'Patriots': 'New England Patriots',
+    'Dolphins': 'Miami Dolphins',
+    'Jets': 'New York Jets',
+    'Bills': 'Buffalo Bills',
+    'Cowboys': 'Dallas Cowboys',
+    'Eagles': 'Philadelphia Eagles',
+    'Giants': 'New York Giants',
+    'Football Team': 'Washington Football Team',
+    'Vikings': 'Minnesota Vikings',
+    'Packers': 'Green Bay Packers',
+    'Lions': 'Detroit Lions',
+    'Bears': 'Chicago Bears',
+    'Steelers': 'Pittsburgh Steelers',
+    'Browns': 'Cleveland Browns',
+    'Ravens': 'Baltimore Ravens',
+    'Bengals': 'Cincinnati Bengals'
 }
 
 StartEm = []
@@ -311,6 +343,7 @@ def scrape(url):
             name = ''
             opponent = ''
             team = ''
+            setting = 'start'
             if counter < 6:
                 position = 'qb'
                 if counter > 2:
@@ -344,17 +377,19 @@ def scrape(url):
                 while opponent[0] != ' ':
                     opponent = opponent[1:]
             elif position == 'dst':
-                team += text[0]
+                name += text[0]
                 text = text[1:]
                 while text[0].isupper() is False:
-                    team += text[0]
+                    name += text[0]
                     text = text[1:]
-                name = team
+                name = teamnames[name.strip()]
+                team = teamnames[name]
+                print(setting)
                 opponent = text[7:]
                 while opponent[0].isupper() is False:
                     opponent = opponent[1:]
                 opponent = opponent[0:-1]
-            add(position, setting, name.strip(), team.strip(), opponent.strip())
+            add(position, setting, name, team , opponent.strip())
             counter += 1
     elif url == 'https://fantasydata.com/start-em-sit-em-week-' + week:
         source = requests.get(url).text
@@ -424,6 +459,8 @@ def getStarted():
         scrape(url)
 
     sort()
-    quicksort(StartEm, lambda x, y: x.positivementions >= y.positivementions)
-    quicksort(SitEm, lambda x, y: x.negativementions >= y.negativementions)
+    quicksort(StartEm, lambda x, y: x.position >= y.position)
+    quicksort(SitEm, lambda x, y: x.position >= y.position)
+    for player in Enigma:
+        print(player.name)
 
