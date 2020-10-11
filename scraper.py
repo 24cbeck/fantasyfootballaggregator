@@ -1,7 +1,18 @@
 from bs4 import BeautifulSoup
 import requests
-import csv
+'''
+Cody Beck
+sunhacks 2020
+10/09/20 - 10/10/20
+scraper.py - finds what the fantasy football cognoscenti is predicting for weekend and condenses it into simple lists 
 
+'''
+
+
+
+
+
+# Contains possible abbreviations for NFL team names
 teamnames = {
     'Los Angeles Chargers': 'LAC',
     'Denver Broncos': 'DEN',
@@ -99,6 +110,7 @@ teamnames = {
     'Bengals': 'Cincinnati Bengals'
 }
 
+# Constructors
 StartEm = []
 SitEm = []
 Enigma = []
@@ -112,7 +124,7 @@ DST = []
 positions = ['quarterbacks', 'wide-receivers', 'running-backs', 'tight-ends', 'kickers', 'defenses']
 scoring = ''
 
-
+# Goes the the official NFL website to find what week it is
 def getWeek():
     url = 'http://nfl.com/schedules/'
     source = requests.get(url).text
@@ -120,6 +132,7 @@ def getWeek():
     return soup.find('main').find('h2').text[12]
 
 
+# More variables
 week = getWeek()
 urls = ['https://www.nbcsports.com/washington/football-team/start-em-sit-em-best-fantasy-football-plays-week-' + week,
         'https://walterfootball.com/fantasy2020startsit.php',
@@ -128,6 +141,7 @@ urls = ['https://www.nbcsports.com/washington/football-team/start-em-sit-em-best
         ]
 
 
+# Creates a player class that includes all information that fantasy managers like know
 class Player:
     def __init__(self, position, positivementions, negativementions, name, team, opponent):
         self.position = position
@@ -138,7 +152,7 @@ class Player:
         self.opponent = opponent
 
 
-
+# Adds the player to a list based upon what position he plays
 def add(position, setting, name, team, opponent):
     while name.endswith('I'):
         name = name[0:-1]
@@ -182,6 +196,8 @@ def add(position, setting, name, team, opponent):
             DST.append(Player(position, 0, 1, name, team, opponent))
 
 
+# Checks to see if the player is already in a list. If he is, increments either the number of positive mentions
+# or negative mentions based on what the fantasy analyst says about him. If he is not, adds him to the appropriate list
 def compare(name, position, team, opponent, setting):
     if position == 'qb':
         match = 0
@@ -207,7 +223,7 @@ def compare(name, position, team, opponent, setting):
                 break
         if match == 0:
             add(position, setting, name, team, opponent)
-    elif position == 'rb':
+    elif position == 'wr':
         match = 0
         for player in WR:
             if player.name == name and player.team == team and player.opponent == opponent:
@@ -257,6 +273,8 @@ def compare(name, position, team, opponent, setting):
             add(position, setting, name, team, opponent)
 
 
+# Sorts the players into three different lists: one for players that have gotten good press on balance, one for players
+# that have gotten bad press on balance, and one for players that have received equal amounts of good and bad press
 def sort():
     for player in QB:
         if player.positivementions > player.negativementions:
@@ -303,18 +321,20 @@ def sort():
             Enigma.append(player)
 
 
+# Uses the quicksort algorithm to sort the lists based on position
 def quicksort(list, compare_func):
     quicksort_(list, 0, len(list) - 1, compare_func)
     return list
 
 
+# Helper method for the quicksort algorithm
 def quicksort_(list, leftPointer, rightPointer, compare_func):
     if leftPointer < rightPointer:
         finalPivot = part(list, leftPointer, rightPointer, compare_func)
         quicksort_(list, leftPointer, finalPivot - 1, compare_func)
         quicksort_(list, finalPivot + 1, rightPointer, compare_func)
 
-
+# Partitions the list that is being quicksorted
 def part(list, leftPointer, rightPointer, compare_func):
     pivot = list[rightPointer]
     i = leftPointer - 1
@@ -326,12 +346,14 @@ def part(list, leftPointer, rightPointer, compare_func):
     return i + 1
 
 
+# Swaps two items in a list
 def swap(list, one, two):
     temp = list[one]
     list[one] = list[two]
     list[two] = temp
 
 
+# Uses BeautifulSoup to scrape different urls to find out what fantasy experts are saying about players
 def scrape(url):
     counter = 0
     setting = 'start'
@@ -384,12 +406,11 @@ def scrape(url):
                     text = text[1:]
                 name = teamnames[name.strip()]
                 team = teamnames[name]
-                print(setting)
                 opponent = text[7:]
                 while opponent[0].isupper() is False:
                     opponent = opponent[1:]
                 opponent = opponent[0:-1]
-            add(position, setting, name, team , opponent.strip())
+            add(position.strip(), setting, name.strip(), team.strip(), opponent.strip())
             counter += 1
     elif url == 'https://fantasydata.com/start-em-sit-em-week-' + week:
         source = requests.get(url).text
@@ -415,7 +436,7 @@ def scrape(url):
                         opponent = text[3:-1]
                     else:
                         opponent = text[4:-1]
-                    compare(name.strip(), position, teamnames[team.strip()], teamnames[opponent.strip()], setting)
+                    compare(name.strip(), position.strip(), teamnames[team.strip()].strip(), teamnames[opponent.strip()].strip(), setting)
     elif url == 'https://www.nfl.com/news/nfl-fantasy-football-start-em-sit-em-week-' + week + '-':
         for position in positions:
             setting = 'start'
@@ -451,9 +472,10 @@ def scrape(url):
                             opponent = opponent[1:]
                         while opponent.endswith('s') is False and opponent.endswith('m') is False:
                             opponent = opponent[0:-1]
-                    compare(name, position.lower().strip(), teamnames[team.strip()], teamnames[opponent], setting)
+                    compare(name.strip(), position.lower().strip(), teamnames[team.strip()], teamnames[opponent].strip(), setting)
 
 
+# Created for use by main.py
 def getStarted():
     for url in urls:
         scrape(url)
@@ -461,6 +483,4 @@ def getStarted():
     sort()
     quicksort(StartEm, lambda x, y: x.position >= y.position)
     quicksort(SitEm, lambda x, y: x.position >= y.position)
-    for player in Enigma:
-        print(player.name)
 

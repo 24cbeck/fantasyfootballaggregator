@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script type= "text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.0/brython.min.js"></script>
+    <script type= "text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.0/brython_stdlib.min.js"></script>
     <style type="text/css">
         table, th, td {
         border: 1px solid black;
         }
-        table {
+        table{
         border-collapse: collapse;
         margin-left: auto;
         margin-right: auto;
         width: 75%;
+        }
+        label {
+        font-family: helvetica;
         }
         th, td {
         padding: 5px;
@@ -20,19 +25,44 @@
             background-color: #03bafc;
             color: white;
          }
-         tr:nth-child(even) {background-color: #e0ded7;}
+        tr:nth-child(even) {background-color: #e0ded7;}
         h3 {
         font-family: helvetica;
         text-align: center;
         }
+        div {
+        margin-left: auto;
+        margin-right: auto;
+        width: 20%
+
+        }
+
+
     </style>
     <meta charset="UTF-8">
     <title>Fantasy Football Aggregator</title>
 
     <link rel="icon" href="favicon.png" type="image/png">
 </head>
-<body>
-    <h3>Start 'Em</h3>
+<body onload="brython()">
+    <div id="checkboxes">
+        <input type = "checkbox" id="QB" checked>
+        <label for="QB">QB</label>
+        <input type = "checkbox" id="RB" checked>
+        <label for="RB">RB</label>
+        <input type = "checkbox" id="WR" checked>
+        <label for="WR">WR</label>
+        <input type = "checkbox" id="TE" checked>
+        <label for="TE">TE</label>
+        <input type = "checkbox" id="K" checked>
+        <label for="K">K</label>
+        <input type = "checkbox" id="D/ST" checked>
+        <label for="D/ST">D/ST</label>
+    </div>
+
+
+
+    <h3>Start 'em</h3>
     <table id ="startem">
     <tr>
         <th>
@@ -56,17 +86,17 @@
 
     </tr>
     {% for player in list[0] %}
-            <tr>
-            <td>{{player.name}}</td>
-            <td>{{player.position.upper()}}</td>
-            <td>{{player.team}}</td>
-            <td>{{player.opponent}}</td>
-            <td>{{player.positivementions}}</td>
-            <td>{{player.negativementions}}</td>
+            <tr class="row">
+            <td class="name">{{player.name}}</td>
+            <td class="position">{{player.position.upper()}}</td>
+            <td class="team">{{player.team}}</td>
+            <td class="opponent">{{player.opponent}}</td>
+            <td class="positivementions">{{player.positivementions}}</td>
+            <td class="negativementions">{{player.negativementions}}</td>
             </tr>
         {% endfor%}
     </table>
-    <h3>Sit 'Em</h3>
+    <h3>Sit 'em</h3>
     <table id ="sitem">
     <tr>
         <th>
@@ -90,13 +120,13 @@
 
     </tr>
     {% for player in list[1] %}
-            <tr>
-            <td>{{player.name}}</td>
-            <td>{{player.position.upper()}}</td>
-            <td>{{player.team}}</td>
-            <td>{{player.opponent}}</td>
-            <td>{{player.positivementions}}</td>
-            <td>{{player.negativementions}}</td>
+            <tr class="row">
+            <td class="name">{{player.name}}</td>
+            <td class="position">{{player.position.upper()}}</td>
+            <td class="team">{{player.team}}</td>
+            <td class="opponent">{{player.opponent}}</td>
+            <td class="positivementions">{{player.positivementions}}</td>
+            <td class="negativementions">{{player.negativementions}}</td>
             </tr>
         {% endfor%}
     </table>
@@ -124,15 +154,93 @@
 
     </tr>
     {% for player in list[2] %}
-            <tr>
-            <td>{{player.name}}</td>
-            <td>{{player.position.upper()}}</td>
-            <td>{{player.team}}</td>
-            <td>{{player.opponent}}</td>
-            <td>{{player.positivementions}}</td>
-            <td>{{player.negativementions}}</td>
+            <tr class="row">
+            <td class="name">{{player.name}}</td>
+            <td class="position">{{player.position.upper()}}</td>
+            <td class="team">{{player.team}}</td>
+            <td class="opponent">{{player.opponent}}</td>
+            <td class="positivementions">{{player.positivementions}}</td>
+            <td class="negativementions">{{player.negativementions}}</td>
             </tr>
         {% endfor%}
     </table>
+    <script type="text/python" id="script0">
+        from browser import document, console
+        def makeChanges(e):
+            if document['QB'].checked == False:
+                for child in document.select('td.position'):
+                    if child.text == 'QB':
+                        child.parent.style.display = "none"
+            elif document['QB'].checked == True:
+                for child in document.select('td.position'):
+                    if child.text == 'QB':
+                        child.parent.style.display = "table-row"
+        document['QB'].bind('click', makeChanges)
+    </script>
+    <script type="text/python" id="script1">
+        from browser import document, console
+        def makeChanges(e):
+            if document['RB'].checked == False:
+                for child in document.select('td.position'):
+                    if child.text == 'RB':
+                        child.parent.style.display = "none"
+            elif document['RB'].checked == True:
+                for child in document.select('td.position'):
+                    if child.text == 'RB':
+                        child.parent.style.display = "table-row"
+        document['RB'].bind('click', makeChanges)
+    </script>
+    <script type="text/python" id="script2">
+        from browser import document, console
+        def makeChanges(e):
+            if document['WR'].checked == False:
+                for child in document.select('td.position'):
+                    if child.text == 'WR':
+                        child.parent.style.display = "none"
+            elif document['WR'].checked == True:
+                for child in document.select('td.position'):
+                    if child.text == 'WR':
+                        child.parent.style.display = "table-row"
+        document['WR'].bind('click', makeChanges)
+    </script>
+    <script type="text/python" id="script3">
+        from browser import document, console
+        def makeChanges(e):
+            if document['TE'].checked == False:
+                for child in document.select('td.position'):
+                    if child.text == 'TE':
+                        child.parent.style.display = "none"
+            elif document['TE'].checked == True:
+                for child in document.select('td.position'):
+                    if child.text == 'TE':
+                        child.parent.style.display = "table-row"
+        document['TE'].bind('click', makeChanges)
+    </script>
+    <script type="text/python" id="script4">
+        from browser import document, console
+        def makeChanges(e):
+            if document['K'].checked == False:
+                for child in document.select('td.position'):
+                    if child.text == 'K':
+                        child.parent.style.display = "none"
+            elif document['K'].checked == True:
+                for child in document.select('td.position'):
+                    if child.text == 'K':
+                        child.parent.style.display = "table-row"
+        document['K'].bind('click', makeChanges)
+    </script>
+    <script type="text/python" id="script5">
+        from browser import document, console
+        def makeChanges(e):
+            if document['D/ST'].checked == False:
+                for child in document.select('td.position'):
+                    if child.text == 'D/ST':
+                        child.parent.style.display = "none"
+            elif document['D/ST'].checked == True:
+                for child in document.select('td.position'):
+                    if child.text == 'D/ST':
+                        child.parent.style.display = "table-row"
+        document['D/ST'].bind('click', makeChanges)
+    </script>
 </body>
 </html>
