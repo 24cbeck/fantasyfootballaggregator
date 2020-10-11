@@ -3,7 +3,7 @@ import scraper
 
 
 app = Flask(__name__)
-
+print(1)
 scraper.getStarted()
 list = [scraper.StartEm, scraper.SitEm, scraper.Enigma]
 @app.route('/')
